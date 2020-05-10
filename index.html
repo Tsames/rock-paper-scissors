@@ -1,0 +1,87 @@
+<script>
+
+function computerPlay() {
+    options = ["rock","paper","scissors"];
+    randomIndex = Math.floor(Math.random() * 3);
+    return options[randomIndex];
+}
+
+function getPlayerSelection() {
+    let playerChoice = prompt("Please enter your choice for this round.\nPlease enter either \'rock\', \'paper\', or \'scissors\'. If you do not the default will be \'rock\'.", "rock");
+    if ((playerChoice.toLowerCase() != 'rock') && (playerChoice.toLowerCase() != 'paper') && (playerChoice.toLowerCase() != 'scissors')) {
+        return playerChoice = 'rock';
+    } else {
+        return playerChoice.toLowerCase();
+    }
+}
+
+function playRound() {
+    let computerSelection = computerPlay();
+    let playerSelection = getPlayerSelection();
+    let winner = 0;
+    console.log(`\nOne...\nTwo...\nThree...\nShoot!!!\n`);
+    if (computerSelection === playerSelection) {
+        console.log(`Woah! It\'s a tie! You and the computer both choose ${computerSelection}.`);
+    } else if (computerSelection === 'rock') {
+        switch (playerSelection) {
+            case 'scissors':
+                console.log (`Womp Womp, you lose :(. You chose ${playerSelection} and the computer chose ${computerSelection}.`);
+                winner = 2;
+                break;
+            case 'paper':
+                console.log(`You win! Huzzah! Take that mahcine! You chose ${playerSelection} and the computer chose ${computerSelection}.`);
+                winner = 1;
+                break;
+        }
+    } else if (computerSelection === 'paper') {
+        switch (playerSelection) {
+            case 'rock':
+                console.log (`Its okay, you can't win them all. You chose ${playerSelection} and the computer chose ${computerSelection}.`);
+                winner = 2;
+                break;
+            case 'scissors':
+                console.log(`Booyah! You are the winner! You chose ${playerSelection} and the computer chose ${computerSelection}.`);
+                winner = 1;
+                break;
+        }
+    } else {
+        switch (playerSelection) {
+            case 'paper':
+                console.log (`Tough luck, you lost. You chose ${playerSelection} and the computer chose ${computerSelection}.`)
+                winner = 2;
+                break;
+            case 'rock':
+                console.log(`Ha Ha, take thay you bucket of bolts! You win! You chose ${playerSelection} and the computer chose ${computerSelection}.`)
+                winner = 1;
+                break;
+        }
+    }
+    return winner;
+}
+
+function playGame () {
+    let playerScore = 0;
+    let computerScore = 0;
+    for (let round = 1; round <= 5; round ++) {
+        console.log (`... Welcome to Round ${round} ...`)
+        roundWinner = playRound();
+        if (roundWinner === 1) {
+            playerScore ++
+        } else if (roundWinner ===2 ) {
+            computerScore ++
+        }
+        console.log(`At the end of round ${round}, the score is ${playerScore} for our human and ${computerScore} for the computer.\n`);
+    }
+    winner = "";
+    if (playerScore > computerScore) {
+        console.log("And our winner is the human!!!");
+    } else if (computerScore > playerScore) {
+        console.log("And our winner is the computer!! (booo)");
+    } else {
+        console.log("Oh my, it looks like its a draw! That doesn't happen too often. Guess we'll just have to have a rematch!")
+    }
+}
+
+playGame();
+
+</script>
