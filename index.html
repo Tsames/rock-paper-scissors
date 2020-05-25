@@ -1,87 +1,157 @@
-<script>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>rock-paper-scissors_game</title>
+        <link href="./css/reset.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="./css/main.css" rel="stylesheet" type="text/css" media="all"/>
+    </head>
+    <body>
+        <div class='scores' id='score-section'>
+            <p class='scores' id='playerScoreText'>You: 0</p>
+            <p class='scores' id='computerScoreText'>Computer: 0</p>
+            <button class='scores' id='reset-button'>Reset Scores</button>
+        </div>
+        <div id='top'>
+          <h1>Select your weapon!</h1>
+        </div>
+        <div id="middle">
+                <button class='options' id="Scissors">Scissors!</button>
+                <button class='options' id="Rock">Rock!</button>
+                <button class='options' id="Paper">Paper!</button>
+        </div>
+        <div id="bottom">
+          <p class='results' id="action-text"></p>
+          <p class='results' id="results-text"></p>
+        </div>
+    </body>
+    <script>
 
-function computerPlay() {
-    options = ["rock","paper","scissors"];
-    randomIndex = Math.floor(Math.random() * 3);
-    return options[randomIndex];
-}
-
-function getPlayerSelection() {
-    let playerChoice = prompt("Please enter your choice for this round.\nPlease enter either \'rock\', \'paper\', or \'scissors\'. If you do not the default will be \'rock\'.", "rock");
-    if ((playerChoice.toLowerCase() != 'rock') && (playerChoice.toLowerCase() != 'paper') && (playerChoice.toLowerCase() != 'scissors')) {
-        return playerChoice = 'rock';
-    } else {
-        return playerChoice.toLowerCase();
-    }
-}
-
-function playRound() {
-    let computerSelection = computerPlay();
-    let playerSelection = getPlayerSelection();
-    let winner = 0;
-    console.log(`\nOne...\nTwo...\nThree...\nShoot!!!\n`);
-    if (computerSelection === playerSelection) {
-        console.log(`Woah! It\'s a tie! You and the computer both choose ${computerSelection}.`);
-    } else if (computerSelection === 'rock') {
-        switch (playerSelection) {
-            case 'scissors':
-                console.log (`Womp Womp, you lose :(. You chose ${playerSelection} and the computer chose ${computerSelection}.`);
-                winner = 2;
-                break;
-            case 'paper':
-                console.log(`You win! Huzzah! Take that mahcine! You chose ${playerSelection} and the computer chose ${computerSelection}.`);
-                winner = 1;
-                break;
-        }
-    } else if (computerSelection === 'paper') {
-        switch (playerSelection) {
-            case 'rock':
-                console.log (`Its okay, you can't win them all. You chose ${playerSelection} and the computer chose ${computerSelection}.`);
-                winner = 2;
-                break;
-            case 'scissors':
-                console.log(`Booyah! You are the winner! You chose ${playerSelection} and the computer chose ${computerSelection}.`);
-                winner = 1;
-                break;
-        }
-    } else {
-        switch (playerSelection) {
-            case 'paper':
-                console.log (`Tough luck, you lost. You chose ${playerSelection} and the computer chose ${computerSelection}.`)
-                winner = 2;
-                break;
-            case 'rock':
-                console.log(`Ha Ha, take thay you bucket of bolts! You win! You chose ${playerSelection} and the computer chose ${computerSelection}.`)
-                winner = 1;
-                break;
-        }
-    }
-    return winner;
-}
-
-function playGame () {
+    //Set Global Score Variables
+    let results;
+    let playerSelection;
+    let computerSelection;
     let playerScore = 0;
     let computerScore = 0;
-    for (let round = 1; round <= 5; round ++) {
-        console.log (`... Welcome to Round ${round} ...`)
-        roundWinner = playRound();
-        if (roundWinner === 1) {
-            playerScore ++
-        } else if (roundWinner ===2 ) {
-            computerScore ++
+
+    //Setting DOM Variables 
+    //Score Text
+    const playerScoreText = document.querySelector("p#playerScoreText");
+    const computerScoreText = document.querySelector("p#computerScoreText");
+    //Action & Results Text   
+    const actionText = document.querySelector("p#action-text");
+    const resultsText = document.querySelector("p#results-text");
+    //Buttons
+    const bttns = document.querySelectorAll("button.options");
+    const resetButton = document.querySelector("button#reset-button");
+
+    //Set Event Listeners for Buttons
+    bttns.forEach(bttn => bttn.addEventListener("click", (e) => {
+        playerSelection = bttn.id;
+        playGame();
+    }));
+    resetButton.addEventListener('click', (e) => {
+        resetScores();
+    })
+
+    //Callback Functions   
+    function computerChoice() {
+        options = ["Rock","Paper","Scissors"];
+        randomIndex = Math.floor(Math.random() * 3);
+        computerSelection = options[randomIndex];
+    }
+    function setActionText () {
+        setTimeout(() => {
+            actionText.innerHTML= 'One...';
+        }, 1000);
+        setTimeout(() => {
+            actionText.innerHTML= 'One...Two...';
+        }, 2000);
+        setTimeout(() => {
+            actionText.innerHTML= 'One...Two...Three...';
+        }, 3000);
+        setTimeout(() => {
+            actionText.innerHTML= 'Shoot!';
+        }, 4000);
+        setTimeout(() => {
+            actionText.innerHTML= '';
+        }, 6000);
+    }
+    function determineOutcome () {
+        if (computerSelection === playerSelection) {
+            results = 'tie';
+        } else if (computerSelection === 'Rock') {
+            switch (playerSelection) {
+                case 'Scissors':
+                    results = false;
+                    break;
+                case 'Paper':
+                    results = true;
+                    break;
+            }
+        } else if (computerSelection === 'Paper') {
+            switch (playerSelection) {
+                case 'Rock':
+                    results = false;
+                    break;
+                case 'Scissors':
+                    results = true;
+                    break;
+            }
+        } else {
+            switch (playerSelection) {
+                case 'Paper':
+                    results = false;
+                    break;
+                case 'Rock':
+                    results = true;
+                    break;
+            }
         }
-        console.log(`At the end of round ${round}, the score is ${playerScore} for our human and ${computerScore} for the computer.\n`);
     }
-    winner = "";
-    if (playerScore > computerScore) {
-        console.log("And our winner is the human!!!");
-    } else if (computerScore > playerScore) {
-        console.log("And our winner is the computer!! (booo)");
-    } else {
-        console.log("Oh my, it looks like its a draw! That doesn't happen too often. Guess we'll just have to have a rematch!")
+    function getMessage() {
+        const randomIndex = Math.floor(Math.random() * 3)
+        const victoryMessages = [`Ha Ha, take thay you bucket of bolts! You win! You chose ${playerSelection} and the computer chose ${computerSelection}.`, `You win! Huzzah! Take that mahcine! You chose ${playerSelection} and the computer chose ${computerSelection}.`, `Booyah! You are the winner! You chose ${playerSelection} and the computer chose ${computerSelection}.`];
+        const defeatMessages = [`Womp Womp, you lose :(. You chose ${playerSelection} and the computer chose ${computerSelection}.`,`Its okay, you can't win them all. You chose ${playerSelection} and the computer chose ${computerSelection}.`, `Tough luck, you lost. You chose ${playerSelection} and the computer chose ${computerSelection}.`]
+        if (results === 'tie') {
+            return `Oh wow! Its a tie! You both chose ${playerSelection}`;
+        }else if (results) {
+            return victoryMessages[randomIndex];
+        } else {
+            return defeatMessages[randomIndex];
+        } 
+    } 
+    function setScores() {
+        if (results === 'tie') {
+            return;
+        }else if (results) {
+            playerScore ++;
+            setTimeout(() => {
+                playerScoreText.innerHTML = `You: ${playerScore}`;
+            }, 4500);
+        } else {
+            computerScore ++;
+            setTimeout(() => {
+            computerScoreText.innerHTML = `Computer: ${computerScore}`;
+            }, 4500);
+        }
     }
-}
+    function resetScores () {
+        playerScore = 0;
+        computerScore = 0;
+        playerScoreText.innerHTML = `You: 0`;
+        computerScoreText.innerHTML = `Computer: 0`;
+    }
 
-playGame();
-
-</script>
+    //Game Function!
+    function playGame() {
+        computerChoice();
+        resultsText.innerHTML = '';
+        determineOutcome();
+        setActionText();
+        setTimeout(() => {
+            resultsText.innerHTML = getMessage();
+        }, 4500);
+        setScores();
+    }
+    </script>
+</html>
